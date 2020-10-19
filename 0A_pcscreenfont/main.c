@@ -25,7 +25,10 @@
 
 #include "uart.h"
 #include "lfb.h"
-
+#include "gpio.h"
+#include <stdlib.h>
+typedef unsigned int uint32_t;
+// http://www.state-machine.com/doc/Building_bare-metal_ARM_with_GNU.pdf
 void main()
 {
     // set up serial console and linear frame buffer
@@ -38,6 +41,9 @@ void main()
     // display a UTF-8 string on screen with SSFN
     lfb_proprint(80, 120, "Hello 多种语言 Многоязычный többnyelvű World!");
 
+    GPIO_GET();
+    uint32_t a = GPIO_GET();
+    GPIO_SET(a);
     // echo everything back
     while(1) {
         uart_send(uart_getc());

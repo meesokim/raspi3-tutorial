@@ -43,3 +43,7 @@
 #define GPPUD           ((volatile unsigned int*)(MMIO_BASE+0x00200094))
 #define GPPUDCLK0       ((volatile unsigned int*)(MMIO_BASE+0x00200098))
 #define GPPUDCLK1       ((volatile unsigned int*)(MMIO_BASE+0x0020009C))
+
+#define GPIO_GET()      *GPLEV0
+#define GPIO_SET(a)     *GPSET0=a
+#define GPIO_CLR(a)     *GPCLR0=a

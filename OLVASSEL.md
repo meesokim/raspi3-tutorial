@@ -46,6 +46,15 @@ nagyszerű [Circle C++](https://github.com/rsta2/circle) függvénykönyvtárat,
 tartalmazza, hanem minden Raspberry Pi funkció, amit ebben az oktatóanyagban sorra veszünk (és még több is) már eleve
 implementálva van benne, csak meg kell hívni őket.
 
+Miért nem Rust?
+---------------
+
+Egyszerűen azért, mert a személyes véleményem az, hogy a Rust nyelv felsőbb szintű, mint ami ideális a direkt vas programozásához,
+valahogy úgy, ahogy C++ esetében. De ha biztosítod a szükséges runtime függvénykönyvtárat, akkor lehetséges. A multiplatform
+rendszerbetöltőmhöz van egy [minta Rust kernel](https://gitlab.com/bztsrc/bootboot) is, és @andre-richter portolta ezeket az
+oktatóanyagokat Rustra. Később jelentősen átírta és kibővítette a [Rust repó](https://github.com/rust-embedded/rust-raspi3-OS-tutorials)ját,
+ami kiváló kiindulás ha ez a programozási nyelv érdekel.
+
 Előkészületek
 -------------
 
@@ -58,7 +67,9 @@ oktatóanyagokat elsőként Clang-al is letesztelte.
 
 Javaslom, hogy szerezz be egy [Micro SD kártya USB adaptert](http://media.kingston.com/images/products/prodReader-FCR-MRG2-img.jpg)
 (sok gyártó eleve szállít ilyent az SD kártyáihoz), hogy könnyedén csatlakoztathasd az asztali gépedhez, mint egy
-pent, speciális kártya olvasó interfész nélkül (habár sok laptopban gyárilag van ilyen olvasó manapság).
+pent, speciális kártya olvasó interfész nélkül (habár sok laptopban gyárilag van ilyen olvasó manapság). Ha nem szereted a `dd`-t,
+akkor a lemezképek írásához javaslom az [USBImager](https://gitlab.com/bztsrc/usbimager)t, ami egy egyszerű GUI-s alkalmazás, nem
+igényel telepítést és elérhető Windows, MacOSX és Linux rendszerekhez.
 
 Az MBR partíciós táblát létre kell hozni az SD kártyán LBA FAT32 (0x0C típusú) partícióval, leformázni azt,
 majd rámásolni a *bootcode.bin*, *start.elf* és *fixup.dat* állományokat. Alternatívaként letöltheted a raspbian képfájlt,
@@ -143,7 +154,7 @@ Hasonlóan a perifáriák is a memórián keresztül kommunikálnak a CPU-val. M
 minden eszköz saját protokollt beszél. Ami közös, az az, hogy ez a memóriarész csak 32 bites adagokban, 4-el osztható
 címen írható / olvasható (szavak), és mindegyiknek kontroll/státusz illetve adat szavai vannak. Sajnálatos módon
 a Broadcom (a SoC gyártója) hírhedten szarul dokumentája a termékeit. A legjobb, ami van, a BCM2835-ös leírása, ami
-azért eléggé hasonló. (FRISSÍTÉS: Raspberry Piék kiadtak egy módosított verziót [BCM2837 dokumentációként](https://github.com/raspberrypi/documentation/files/1888662/)).
+azért eléggé hasonló.
 
 Van továbbá lapcímfordító egység (MMU) a CPU-ban ami lehetővé teszi virtuális címterek használatát. Ez néhány
 speciális CPU rendszer regiszterrel programozható, és oda kell figyelni, amikor ezeket az MMIO területeket képezük le

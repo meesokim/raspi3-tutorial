@@ -43,6 +43,21 @@ possible, because that requires a runtime library. If you are interested in this
 at the brilliant [Circle C++](https://github.com/rsta2/circle) library, which not only contains the mandatory
 C++ runtime, but also implements every Raspberry Pi functionalities we're about to discuss in these tutorials (and even more).
 
+Why not Rust?
+-------------
+
+Simply because my personal opinion is that Rust is a much higher level language than preferable for bare metal, something like
+with C++. But if you provide the required runtime libraries, you can do it. My multiplatform system boot loader has an
+[example Rust kernel](https://gitlab.com/bztsrc/bootboot) too and @andre-richter ported these tutorials to Rust.
+He has added considerably more code to his [Rust repository](https://github.com/rust-embedded/rust-raspi3-OS-tutorials) which
+is a very good start if you're interested in this language.
+
+A few questions popped up on [ycombinator](https://news.ycombinator.com/item?id=24637129) regarding this. First, please note
+that I've started the sentance with "my personal opinion" (and I mean Rust has a considerably larger and more complex grammar
+than C, and it's easy to forget with cargo that you actually must compile in all library dependencies). Second, and please
+don't get this the wrong way, but if you find clicking on the "Rust port" link too complicated then maybe low-level
+programming is not the best hobby for you!
+
 Prerequisites
 -------------
 
@@ -55,7 +70,9 @@ tutorials for the first time with Clang too.
 
 I recommend to get a [Micro SD card USB adapter](http://media.kingston.com/images/products/prodReader-FCR-MRG2-img.jpg)
 (many manufacturers ship SD cards with such an adapter), so that you can connect the card to any desktop computer just
-like an USB stick, no special card reader interface required (although many laptops have those these days).
+like an USB stick, no special card reader interface required (although many laptops have those these days). If you dislike
+`dd`, then for writing images I recommend [USBImager](https://gitlab.com/bztsrc/usbimager) which is simple GUI app with a
+portable executable available for Windows, MacOSX and Linux.
 
 You can create an MBR partitioning scheme on the SD card with an LBA FAT32 (type 0x0C) partition, format it
 and copy *bootcode.bin*, *start.elf* and *fixup.dat* onto it. Or alternatively you can download a raspbian image,
@@ -118,7 +135,7 @@ That includes a
 
  - VideoCore GPU
  - ARM-Cortex-A53 CPU (ARMv8)
- - Some MMIO mapped pheripherals.
+ - Some MMIO mapped peripherals.
 
 Interestingly the CPU is not the main processor on the board. When it's powered up, first GPU runs. When it's
 finished with the initialization by executing the code in bootcode.bin, it will load and execute the start.elf executable.
@@ -139,8 +156,7 @@ Similarily, all peripherals communicates in memory with the CPU. Each has it's d
 device has it's own protocol. What's common for these devices that their memory must be read and written in 32 bit
 units at 4 bytes aligned addresses (so called words), and each has control/status and data words. Unfortunately
 Broadcom (the manufacturer of the SoC chip) is legendary bad at documenting their products. The best we've got is the
-BCM2835 documentation, which is close enough. (UPDATE: Raspberry Pi provided and updated version for
-[BCM2837 documentation](https://github.com/raspberrypi/documentation/files/1888662/)).
+BCM2835 documentation, which is close enough.
 
 There's also a Memory Management Unit in the CPU which allows creating virtual address spaces. This can be programmed
 by specific CPU registers, and care must be taken when you map these MMIO addresses into a virtual address space.

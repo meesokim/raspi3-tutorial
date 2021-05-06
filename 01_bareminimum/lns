@@ -1,0 +1,9 @@
+#!/bin/bash
+for dir in "$@"
+do
+	cmd=${dir:25:100}
+	if [ "${cmd: -2}" == "-9" ]; then
+		cmd=${cmd::-2}
+	fi
+	echo ln -s /usr/bin/$dir /usr/bin/aarch64-elf-$cmd
+done
